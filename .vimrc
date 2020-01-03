@@ -42,10 +42,11 @@ endif
 call plug#begin('~/.vim/plugged')
 " Airline statusline plugin
 Plug 'vim-airline/vim-airline'
-" CSS colors
-Plug 'skammer/vim-css-color'
+" delimitMate plugin
+Plug 'Raimondi/delimitMate'
 " Nord colorscheme
 Plug 'arcticicestudio/nord-vim'
+
 call plug#end()
 
 " air-line
