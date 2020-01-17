@@ -31,6 +31,7 @@ exec --no-startup-id setxkbmap -layout cz,us -option grp:alt_shift_toggle
 exec --no-startup-id feh --bg-scale ~/wallpaperfull.png
 exec --no-startup-id numlockx
 exec --no-startup-id polybar mybar
+exec --no-startup-id compton --blur-background --backend glx --blur-method kawase
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
