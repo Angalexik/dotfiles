@@ -1,0 +1,202 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/*
+Original layouts by u/Herkt https://www.reddit.com/r/FirefoxCSS/comments/7eazix/my_attempt_at_a_oneline_interface/ and u/bleeps__ https://www.reddit.com/r/FirefoxCSS/comments/7ignsk/oneline_flat_interface_dark_light/ */
+
+/* Later modified by Angalexik */
+
+:root:-moz-lwtheme-brighttext {                                      /* minor color changes to the default dark theme */
+  --chrome-background-color: #111 !important;                        /* tab strip background & inactive tabs */
+  --chrome-secondary-background-color: #F00 !important;              /* nav bar & active tab */
+  --chrome-color: #ccc !important;                                   /* url & tab text, close tab & new tab buttons */
+  background-color: #444 !important;                                 /* top border of out of focus window */
+}
+
+:root:-moz-lwtheme-darktext {                                        /* minor changes to the default light theme */
+  --color-overflow: #ddd;                                            /* >> button color */
+  --chrome-background-color: #ccc !important;                        /* tab strip background & inactive tabs */
+}
+
+:root {
+  --tabs-border: transparent !important;                             /* active tab left & right borders - not working in 58?*/
+  --toolbox-border-bottom-color: transparent !important;             /* 1px line under background tabs */
+  --chrome-nav-bar-controls-border-color: transparent !important;    /* border around url bar */
+}
+
+/* Move Tab-bar beside Nav-bar */
+#TabsToolbar {
+  margin-bottom: 0px !important;                /* not needed anymore? */
+  margin-top: 0px !important;                   /*  */
+  margin-left: 35vw !important;
+  margin-right: -34px !important;
+  max-height: 32px !important;
+}
+
+#nav-bar {
+  margin-bottom: -1px !important;               /* remove navbar bottom 1px border */
+  margin-top: -32px !important;
+  margin-right: 65vw !important;
+  border-top: none !important;
+  background-color: #2e3440 !important;
+}
+
+/* Remove padding above tabbar in compact mode */
+#main-window[sizemode="normal"] > #titlebar {
+  -moz-appearance: initial !important;
+}
+
+
+/* Back & Forward buttons */
+#back-button > .toolbarbutton-icon,
+#forward-button > .toolbarbutton-icon {
+  transform: scale(0.9, 0.9) !important;
+  margin-left: -2px !important;
+  margin-right: -2px !important;
+}
+
+/* Move hamburger menu to the left */
+#PanelUI-button,
+#customization-panel-container,
+#customization-panelWrapper .panel-arrow {
+  -moz-box-ordinal-group: 0 !important;
+  margin-right: -6px !important;
+}
+
+#appMenu-popup {
+  margin-right: -258px !important;
+}
+
+#appMenu-popup .panel-arrow {
+  margin-right: 248px !important;
+}
+
+/* More tools... button */
+#nav-bar-overflow-button {
+  transform: scale(0.9, 0.9) !important;
+  fill: var(--color-overflow) !important;
+}
+
+
+/* Tabs */
+.tabbrowser-tab {
+  height: 32px !important;
+}
+
+/* Remove empty space before first tab
+Delete this rule if you need a space to drag the window*/
+#TabsToolbar .titlebar-placeholder[type="pre-tabs"]{
+    display: none !important;
+}
+
+/* Remove border between tabs
+Delete this rule if you want separators between background tabs */
+.tabbrowser-tab::after, .tabbrowser-tab::before {
+  border-left: none !important;
+}
+
+/* Border between background tabs */
+.tabbrowser-tab::after, .tabbrowser-tab::before {
+  color: grey !important;
+  opacity: .2 !important;
+ }
+
+/* New tab button color */
+#new-tab-button, .tabs-newtab-button {
+  fill: var(--chrome-color) !important;
+  }
+
+/* Extremely hacky way of changing background behind selected tabs */
+.tab-line {
+    background-color: #2e3440 !important;
+    height: 28px !important;
+  }
+
+
+/* Hide various elements */
+/* Menu */
+#appMenu-fxa-container,                    /* Sign in to Sync */
+#appMenu-fxa-container+toolbarseparator,
+/* #appMenuRestoreLastSession, */
+#appMenu-zoom-controls,
+#appMenu-zoom-controls+toolbarseparator,
+#appMenu-edit-controls,
+#appMenu-edit-controls+toolbarseparator,
+#appMenu-library-button,
+#appMenu-customize-button,
+#appMenu-customize-button+toolbarseparator,
+#appMenu-open-file-button,
+#appMenu-save-file-button,
+#appMenu-find-button,
+#appMenu-more-button,
+
+/* URL Bar */
+#pageActionButton,
+#pocket-button-box,
+ar-button,
+.autocomplete-history-dropmarker,
+#identity-icon-labels,
+.tab-icon-image
+{
+    display: none !important;
+}
+
+#tabbrowser-tabs {
+    background-color: #2e3440 !important;
+}
+
+#page-action-buttons {
+    display: none !important;
+}
+
+#identity-box{
+    display: none !important;
+}
+
+#tracking-protection-icon-container {
+    display: none !important;
+}
+
+#tabbrowser-tabpanels{
+  background-color: #2e3440 !important;
+}
+
+.tab-content {
+    background-color: #2e3440;
+    border-radius: 20px;
+    justify-content: center !important;
+}
+
+.tab-content:hover {
+    background-color: #5e81ac !important;
+}
+
+.tab-content[selected="true"] {
+    background-color: #4c566a !important;
+}
+
+#urlbar {
+    background-color: #2e3440 !important;
+    border-radius: 20px !important;
+}
+
+.tab-close-button {
+    display: none !important;
+}
+
+.tabbrowser-tab {
+    margin: 1px !important;
+}
+
+#nav-bar-overflow-button {
+    list-style-image: url('chevron.svg') !important;
+}
+
+.tab-label {
+    -moz-box-flex: 1 !important;
+    text-align: center !important;
+}
+
+/* Change bitdefender icon */
+#_446900e4-71c2-419f-a6a7-df9c091e268b_-browser-action {
+    list-style-image: url('bitdefender.svg') !important;
+}
