@@ -22,7 +22,7 @@ modules-left = xwindow d
 modules-center = i3
 background = ${colors.nord1}
 foreground = ${colors.nord4}
-font-0 = "Montserrat:size=13;3"
+font-0 = "SF Pro Text:size=13;3"
 font-1 = "Sauce Code Pro Nerd Font Mono:size=17;4"
 height = 20
 padding =
