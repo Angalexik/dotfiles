@@ -1,5 +1,0 @@
-configuration {
-    modi: "window,drun"
-    font: "Montserrat 13"
-}
-rofi.theme: /usr/share/rofi/themes/dmenu.rasi
