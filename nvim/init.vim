@@ -21,6 +21,7 @@ Plug 'cespare/vim-toml'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'leafgarland/typescript-vim'
 Plug 'tpope/vim-markdown'
+Plug 'clktmr/vim-gdscript3'
 " Visual changes
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
