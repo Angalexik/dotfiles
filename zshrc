@@ -101,6 +101,8 @@ else
   export EDITOR='nvim'
 fi
 
+export PATH=$PATH:/home/alex/.local/bin
+
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
