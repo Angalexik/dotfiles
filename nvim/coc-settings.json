@@ -12,11 +12,6 @@
             "filetypes": ["kerboscript"],
             "initializationOptions": {},
             "settings": {}
-        },
-        "godot": {
-            "host": "127.0.0.1",
-            "filetypes": ["gd", "gdscript3"],
-            "port": 6008
         }
     },
     "java.home": "/usr/lib/jvm/java-8-openjdk"
