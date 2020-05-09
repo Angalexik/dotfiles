@@ -16,6 +16,7 @@ Plug 'cohama/lexima.vim'
 Plug 'mg979/vim-visual-multi'
 " Various FileType support
 Plug 'neoclide/coc.nvim'
+Plug 'kevinoid/vim-jsonc'
 Plug 'Freedzone/kerbovim'
 Plug 'cespare/vim-toml'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
@@ -27,6 +28,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'mhinz/vim-startify'
 Plug 'junegunn/goyo.vim'
+Plug 'ryanoasis/vim-devicons'
 
 call plug#end()
 
@@ -61,6 +63,9 @@ set autoindent
 
 " Markdown settings
 let g:markdown_enable_spell_checking = 0
+
+" Allow json comments
+autocmd FileType json setlocal filetype=jsonc
 
 " Coc.nvim default settings
 
