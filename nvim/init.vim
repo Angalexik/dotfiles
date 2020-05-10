@@ -9,11 +9,12 @@ call plug#begin('~/.nvim_plugins')
 
 " Color scheme
 Plug 'arcticicestudio/nord-vim'
-" Various editing things
+" QOL
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'mg979/vim-visual-multi'
+Plug 'tpope/vim-fugitive'
 " Various FileType support
 Plug 'neoclide/coc.nvim'
 Plug 'kevinoid/vim-jsonc'
