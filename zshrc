@@ -101,7 +101,8 @@ else
   export EDITOR='nvim'
 fi
 
-export PATH=$PATH:/home/alex/.local/bin
+export PATH=$PATH:/home/alex/.local/bin:/home/alex/.gem/ruby/2.7.0/bin
+export GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
