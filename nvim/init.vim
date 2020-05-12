@@ -68,6 +68,13 @@ let g:markdown_enable_spell_checking = 0
 " Allow json comments
 autocmd FileType json setlocal filetype=jsonc
 
+" Custom devicons icons
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ks'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.zshrc'] = ''
+let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['zshrc'] = ''
+
 " Coc.nvim default settings
 
 " TextEdit might fail if hidden is not set.
