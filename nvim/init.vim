@@ -30,6 +30,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'mhinz/vim-startify'
 Plug 'junegunn/goyo.vim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'frazrepo/vim-rainbow'
 
 call plug#end()
 
@@ -61,6 +62,13 @@ set tabstop=2
 set shiftwidth=2
 set noexpandtab
 set autoindent
+
+" Rainbow brackets 🌈
+let g:rainbow_active = 1
+let g:rainbow_ctermfgs = [220, 153, 213]
+let g:rainbow_load_separately = [
+    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+    \ ]
 
 " Markdown settings
 let g:markdown_enable_spell_checking = 0
