@@ -16,7 +16,7 @@ Plug 'cohama/lexima.vim'
 Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-fugitive'
 " Various FileType support
-Plug 'neoclide/coc.nvim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kevinoid/vim-jsonc'
 Plug 'Freedzone/kerbovim'
 Plug 'cespare/vim-toml'
@@ -24,6 +24,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'leafgarland/typescript-vim'
 Plug 'tpope/vim-markdown'
 Plug 'clktmr/vim-gdscript3'
+Plug 'DonnieWest/kotlin-vim'
 " Visual changes
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
