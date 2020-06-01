@@ -6,8 +6,8 @@ endtry
 
 if vimmarkdownwritemode
     set notermguicolors
+		Goyo
     colorscheme nord
-    Goyo
     let vimmarkdownwritemode = 0
 else
     set termguicolors

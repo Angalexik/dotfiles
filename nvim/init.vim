@@ -1,5 +1,5 @@
-"             _
-"  _ ____   _(_)_ __ ___
+"							_
+"  _ ____		_(_)_ __ ___
 " | '_ \ \ / | | '_ ` _ \
 " | | | \ V /| | | | | | |
 " |_| |_|\_/ |_|_| |_| |_|
@@ -13,7 +13,6 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
-Plug 'mg979/vim-visual-multi'
 Plug 'tpope/vim-fugitive'
 " Various FileType support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -25,6 +24,8 @@ Plug 'leafgarland/typescript-vim'
 Plug 'tpope/vim-markdown'
 Plug 'clktmr/vim-gdscript3'
 Plug 'DonnieWest/kotlin-vim'
+Plug 'tfnico/vim-gradle'
+Plug 'rjohnsondev/vim-compiler-go'
 " Visual changes
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
@@ -44,6 +45,11 @@ nmap <leader>w :w!<cr>
 map <leader><space> /
 map <leader><C-space> ?
 nmap <leader>zz :source ~/.config/nvim/markdown.vim<cr>
+nmap <C-q>l :tabnext<cr>
+nmap <C-q>h :tabprevious<cr>
+
+" Custom commands
+cab tn tabnew
 
 " Visual settings
 colorscheme nord
@@ -66,16 +72,23 @@ set autoindent
 
 " Rainbow brackets 🌈
 let g:rainbow_active = 1
-let g:rainbow_ctermfgs = [220, 153, 213]
+let g:rainbow_ctermfgs = [220, 203, 213]
 let g:rainbow_load_separately = [
-    \ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
-    \ ]
+	\ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
+	\ ]
 
 " Markdown settings
 let g:markdown_enable_spell_checking = 0
 
 " Allow json comments
 autocmd FileType json setlocal filetype=jsonc
+
+" Custom comments for vim-commetary
+autocmd FileType jsonc setlocal commentstring=//\ %s
+autocmd FileType kerboscript setlocal commentstring=//\ %s
+
+" Configure go compiler
+let g:golang_goroot = '/usr/lib/go'
 
 " Custom devicons icons
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
@@ -84,7 +97,13 @@ let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.zshrc'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['zshrc'] = ''
 
+" I hate everything about this, but have no idea how to fix it.
+if !empty(glob("./gradlew"))
+	compiler gradlew
+endif
+
 " Coc.nvim default settings
+" -----------------------------------
 
 " TextEdit might fail if hidden is not set.
 set hidden
@@ -108,14 +127,14 @@ set signcolumn=yes
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+			\ pumvisible() ? "\<C-n>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]	=~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
@@ -124,9 +143,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+	inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-  imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+	imap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -143,11 +162,11 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+	if (index(['vim','help'], &filetype) >= 0)
+		execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
@@ -157,21 +176,21 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 nmap <leader>rn <Plug>(coc-rename)
 
 " Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+xmap <leader>f	<Plug>(coc-format-selected)
+nmap <leader>f	<Plug>(coc-format-selected)
 
 augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+	autocmd!
+	" Setup formatexpr specified filetype(s).
+	autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+	" Update signature help on jump placeholder.
+	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region.
 " Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+xmap <leader>a	<Plug>(coc-codeaction-selected)
+nmap <leader>a	<Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>ac  <Plug>(coc-codeaction)
@@ -195,10 +214,10 @@ xmap <silent> <TAB> <Plug>(coc-range-select)
 command! -nargs=0 Format :call CocAction('format')
 
 " Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold :call		 CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR	 :call		 CocAction('runCommand', 'editor.action.organizeImport')
 
 " Add (Neo)Vim's native statusline support.
 " NOTE: Please see `:h coc-status` for integrations with external plugins that
@@ -207,18 +226,24 @@ set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Mappings using CoCList:
 " Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <space>a	:<C-u>CocList diagnostics<cr>
 " Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <space>e	:<C-u>CocList extensions<cr>
 " Show commands.
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+nnoremap <silent> <space>c	:<C-u>CocList commands<cr>
 " Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+nnoremap <silent> <space>o	:<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+nnoremap <silent> <space>s	:<C-u>CocList -I symbols<cr>
 " Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+nnoremap <silent> <space>j	:<C-u>CocNext<CR>
 " Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+nnoremap <silent> <space>k	:<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+nnoremap <silent> <space>p	:<C-u>CocListResume<CR>
+
+" Coc.nvim custom options
+" -------------------------
+
+nmap <silent> <C-d> <Plug>(coc-cursors-word)*
+xmap <silent> <C-d> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)gn
