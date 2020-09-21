@@ -1,6 +1,12 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =5
+let g:netrw_dirhistcnt =2
+let g:netrw_dirhist_2='/home/alex/Python/plexupdate'
+let g:netrw_dirhist_1='/home/alex/Documents'
+let g:netrw_dirhist_0='/usr/include/sys'
+let g:netrw_dirhist_9='/home/alex/.nvim_plugins/vim-rooter/plugin'
+let g:netrw_dirhist_8='/home/alex/.nvim_plugins/vim-rooter'
+let g:netrw_dirhist_7='/home/alex/.nvim_plugins/vim-rooter/plugin'
+let g:netrw_dirhist_6='/home/alex/.nvim_plugins/vim-rooter'
 let g:netrw_dirhist_5='/home/alex/.config/nvim'
 let g:netrw_dirhist_4='/home/alex/git-hell/Kode_Desktop/linux installer'
 let g:netrw_dirhist_3='/home/alex/git-hell/OpenComputerSnippets/snippets'
-let g:netrw_dirhist_2='/home/alex/Mount/Games/ksp/Kerbal Space Program/game/Ships/Script/boot'

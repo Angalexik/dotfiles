@@ -4,28 +4,34 @@
 " | | | \ V /| | | | | | |
 " |_| |_|\_/ |_|_| |_| |_|
 
+" Disable some polyglot language packs
+let g:polyglot_disabled = ['gdscript']
+
 " Plugins
 call plug#begin('~/.nvim_plugins')
 
 " Color scheme
 Plug 'arcticicestudio/nord-vim'
+Plug 'joshdick/onedark.vim'
 " QOL
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-rooter'
 " Various FileType support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kevinoid/vim-jsonc'
 Plug 'Freedzone/kerbovim'
-Plug 'cespare/vim-toml'
+" Plug 'cespare/vim-toml'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plug 'leafgarland/typescript-vim'
-Plug 'tpope/vim-markdown'
+" Plug 'leafgarland/typescript-vim'
+" Plug 'tpope/vim-markdown'
 Plug 'clktmr/vim-gdscript3'
-Plug 'DonnieWest/kotlin-vim'
-Plug 'tfnico/vim-gradle'
-Plug 'rjohnsondev/vim-compiler-go'
+" Plug 'DonnieWest/kotlin-vim'
+" Plug 'tfnico/vim-gradle'
+Plug 'rubixninja314/vim-mcfunction'
+Plug 'sheerun/vim-polyglot'
 " Visual changes
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
@@ -38,6 +44,10 @@ call plug#end()
 
 " Airline Settings
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+" Unmap <C-q> to prevent interference with my commands
+map <C-q> <Nop>
 
 " Remaps
 let mapleader = ' '
@@ -45,17 +55,21 @@ nmap <leader>w :w!<cr>
 map <leader><space> /
 map <leader><C-space> ?
 nmap <leader>zz :source ~/.config/nvim/markdown.vim<cr>
-nmap <C-q>l :tabnext<cr>
-nmap <C-q>h :tabprevious<cr>
+nmap <C-q>l :bnext<cr>
+nmap <C-q>h :bprevious<cr>
+nmap <C-q-l> :bnext<cr>
+nmap <C-q-h> :bprevious<cr>
 
-" Custom commands
-cab tn tabnew
+
+" Vim rooter
+let g:rooter_patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/', 'gradle/']
 
 " Visual settings
 colorscheme nord
 set encoding=UTF-8
 set number
 set breakindent
+set termguicolors
 highlight NonText ctermfg=Black
 
 " Search
@@ -71,14 +85,15 @@ set noexpandtab
 set autoindent
 
 " Rainbow brackets 🌈
-let g:rainbow_active = 1
+let g:rainbow_active = 0
 let g:rainbow_ctermfgs = [220, 203, 213]
+let g:rainbow_guifgs = ['#ffd700', '#ff5f5f', '#ff87ff']
 let g:rainbow_load_separately = [
 	\ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ],
 	\ ]
 
 " Markdown settings
-let g:markdown_enable_spell_checking = 0
+" let g:markdown_enable_spell_checking = 0
 
 " Allow json comments
 autocmd FileType json setlocal filetype=jsonc
@@ -87,9 +102,6 @@ autocmd FileType json setlocal filetype=jsonc
 autocmd FileType jsonc setlocal commentstring=//\ %s
 autocmd FileType kerboscript setlocal commentstring=//\ %s
 
-" Configure go compiler
-let g:golang_goroot = '/usr/lib/go'
-
 " Custom devicons icons
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
 let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['ks'] = ''
@@ -97,12 +109,11 @@ let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols = {}
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['.zshrc'] = ''
 let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['zshrc'] = ''
 
-" I hate everything about this, but have no idea how to fix it.
-if !empty(glob("./gradlew"))
+if filereadable('gradlew')
 	compiler gradlew
 endif
 
-" Coc.nvim default settings
+" Coc.nvim settings
 " -----------------------------------
 
 " TextEdit might fail if hidden is not set.
@@ -247,3 +258,6 @@ nnoremap <silent> <space>p	:<C-u>CocListResume<CR>
 
 nmap <silent> <C-d> <Plug>(coc-cursors-word)*
 xmap <silent> <C-d> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)gn
+nmap <leader>f :CocCommand prettier.formatFile<cr>
+
+command! -nargs=0 Prettier :CocCommand prettier.formatFile

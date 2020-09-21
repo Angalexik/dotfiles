@@ -5,12 +5,10 @@ catch /.*/
 endtry
 
 if vimmarkdownwritemode
-	set notermguicolors
 	Goyo
 	colorscheme nord
 	let vimmarkdownwritemode = 0
 else
-	set termguicolors
 
 	highlight Normal guibg=#f1f1f1 guifg=#424242
 	highlight LineNr guibg=#f1f1f1

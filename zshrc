@@ -115,6 +115,9 @@ export GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"
 alias vi='nvim'
 alias vim='nvim'
 alias nvimrc='nvim ~/.config/nvim/init.vim'
+alias pyvenv='source .env/bin/activate'
+alias pandemo='demopan -w "/home/alex/Mount/Games/Steam/steamapps/common/Team Fortress 2/tf/" --demos "/home/alex/Mount/Games/Steam/steamapps/common/Team Fortress 2/tf/demos"'
+alias gradlew='./gradlew'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
