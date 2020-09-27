@@ -5,7 +5,7 @@
 " |_| |_|\_/ |_|_| |_| |_|
 
 " Disable some polyglot language packs
-let g:polyglot_disabled = ['gdscript']
+let g:polyglot_disabled = ['gdscript', 'python']
 
 " Plugins
 call plug#begin('~/.nvim_plugins')
@@ -51,18 +51,32 @@ map <C-q> <Nop>
 
 " Remaps
 let mapleader = ' '
+" Fast save
 nmap <leader>w :w!<cr>
+" Fast search
 map <leader><space> /
 map <leader><C-space> ?
+" Change to writing mode
 nmap <leader>zz :source ~/.config/nvim/markdown.vim<cr>
+" Nicer buffer switching
 nmap <C-q>l :bnext<cr>
 nmap <C-q>h :bprevious<cr>
 nmap <C-q-l> :bnext<cr>
 nmap <C-q-h> :bprevious<cr>
-
+" Remap folds for qwertz layout
+nmap yc zc
+nmap yo zo
+nmap ya za
+nmap yC zC
+nmap yO zO
+nmap yA zA
+nmap yr zr
+nmap yR zR
+nmap ym zm
+nmap yM zM
 
 " Vim rooter
-let g:rooter_patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/', 'gradle/']
+let g:rooter_patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/', 'gradle/', 'Cargo.toml']
 
 " Visual settings
 colorscheme nord
@@ -94,6 +108,10 @@ let g:rainbow_load_separately = [
 
 " Markdown settings
 " let g:markdown_enable_spell_checking = 0
+
+" Fold settings
+set foldmethod=marker
+set foldmarker=#region,#endregion
 
 " Allow json comments
 autocmd FileType json setlocal filetype=jsonc
