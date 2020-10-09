@@ -5,36 +5,19 @@ catch /.*/
 endtry
 
 if vimmarkdownwritemode
-	Goyo
+	set background=dark
 	colorscheme nord
+	set conceallevel=0
+	Goyo!
 	let vimmarkdownwritemode = 0
 else
+	set background=light
+	set conceallevel=2
+	let g:pencil_neutral_headings = 1
+	let g:pencil_neutral_code_bg = 1
+	let g:pencil_terminal_italics = 1
 
-	highlight Normal guibg=#f1f1f1 guifg=#424242
-	highlight LineNr guibg=#f1f1f1
-	highlight NonText guifg=#f1f1f1
-
-	highlight markdownH1 guifg=#424242 cterm=bold gui=bold
-	highlight markdownH2 guifg=#424242 cterm=bold gui=bold
-	highlight markdownH3 guifg=#424242 cterm=bold gui=bold
-	highlight markdownH4 guifg=#424242 cterm=bold gui=bold
-	highlight markdownH5 guifg=#424242 cterm=bold gui=bold
-	highlight markdownH6 guifg=#424242 cterm=bold gui=bold
-
-	highlight markdownHeadingDelimiter guifg=#424242
-
-	highlight markdownBold guifg=#424242 cterm=bold gui=bold
-	highlight markdownItalic guifg=#424242 cterm=underline gui=underline
-	highlight markdownBoldItalic guifg=#424242 cterm=underline,bold gui=underline,bold
-
-	highlight markdownItalicDelimiter guifg=#424242
-	highlight markdownBoldDelimiter guifg=#424242
-	highlight markdownBoldItalicDelimiter guifg=#424242
-
-	highlight markdownListMarker guifg=#424242
-	highlight markdownOrderedListMarker guifg=#424242
-
-	highlight Cursor guibg=#20bbfc
+	colorscheme pencil
 
 	let vimmarkdownwritemode = 1
 

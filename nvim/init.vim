@@ -5,7 +5,7 @@
 " |_| |_|\_/ |_|_| |_| |_|
 
 " Disable some polyglot language packs
-let g:polyglot_disabled = ['gdscript', 'python']
+let g:polyglot_disabled = ['gdscript', 'python', 'markdown']
 
 " Plugins
 call plug#begin('~/.nvim_plugins')
@@ -13,6 +13,7 @@ call plug#begin('~/.nvim_plugins')
 " Color scheme
 Plug 'arcticicestudio/nord-vim'
 Plug 'joshdick/onedark.vim'
+Plug 'reedes/vim-colors-pencil'
 " QOL
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -26,7 +27,7 @@ Plug 'Freedzone/kerbovim'
 " Plug 'cespare/vim-toml'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " Plug 'leafgarland/typescript-vim'
-" Plug 'tpope/vim-markdown'
+Plug 'tpope/vim-markdown'
 Plug 'clktmr/vim-gdscript3'
 " Plug 'DonnieWest/kotlin-vim'
 " Plug 'tfnico/vim-gradle'
