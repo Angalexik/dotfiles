@@ -101,7 +101,7 @@ else
   export EDITOR='nvim'
 fi
 
-export PATH=$PATH:/home/alex/.local/bin:/home/alex/.gem/ruby/2.7.0/bin
+export PATH=$PATH:/home/alex/.local/bin:/home/alex/.gem/ruby/2.7.0/bin:/home/alex/.cargo/bin
 export GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"
 
 # Compilation flags
@@ -118,9 +118,13 @@ alias nvimrc='nvim ~/.config/nvim/init.vim'
 alias pyvenv='source .env/bin/activate'
 alias pandemo='demopan -w "/home/alex/Mount/Games/Steam/steamapps/common/Team Fortress 2/tf/" --demos "/home/alex/Mount/Games/Steam/steamapps/common/Team Fortress 2/tf/demos"'
 alias gradlew='./gradlew'
+alias ipa='curl -s https://httpbin.org/ip | jq -r .origin'
+alias mntsrv='sudo sshfs -o allow_other,IdentityFile=/home/alex/.ssh/id_ed25519 -p 8079 alfred@10.40.120.16:/home/alfred /mnt/Alfred'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Enable starship prompt
 eval "$(starship init zsh)"
+# Enable thefuck
+eval "$(thefuck --alias)"

@@ -24,6 +24,7 @@ Plug 'airblade/vim-rooter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'kevinoid/vim-jsonc'
 Plug 'Freedzone/kerbovim'
+Plug 'maxbane/vim-asm_ca65'
 " Plug 'cespare/vim-toml'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 " Plug 'leafgarland/typescript-vim'
@@ -111,6 +112,8 @@ let g:rainbow_load_separately = [
 	\ ]
 
 " Markdown settings
+let g:mkdp_markdown_css = expand('~/.config/nvim/markdown.css')
+let g:mkdp_page_title = '„${name}“'
 " let g:markdown_enable_spell_checking = 0
 
 " Fold settings
