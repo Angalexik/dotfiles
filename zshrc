@@ -69,6 +69,7 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
+		vi-mode
     git
     archlinux
     encode64
@@ -120,6 +121,8 @@ alias pandemo='demopan -w "/home/alex/Mount/Games/Steam/steamapps/common/Team Fo
 alias gradlew='./gradlew'
 alias ipa='curl -s https://httpbin.org/ip | jq -r .origin'
 alias mntsrv='sudo sshfs -o allow_other,IdentityFile=/home/alex/.ssh/id_ed25519 -p 8079 alfred@10.40.120.16:/home/alfred /mnt/Alfred'
+alias sudedit='sudoedit'
+alias sudeodit='sudoedit'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"

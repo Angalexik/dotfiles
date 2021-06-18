@@ -5,12 +5,12 @@
 " |_| |_|\_/ |_|_| |_| |_|
 
 " Disable some polyglot language packs
-let g:polyglot_disabled = ['gdscript', 'python', 'markdown']
+let g:polyglot_disabled = ['gdscript', 'markdown']
 
 " Plugins
 call plug#begin('~/.nvim_plugins')
 
-" Color scheme
+" Colour scheme
 Plug 'arcticicestudio/nord-vim'
 Plug 'joshdick/onedark.vim'
 Plug 'reedes/vim-colors-pencil'
@@ -20,20 +20,27 @@ Plug 'tpope/vim-commentary'
 Plug 'cohama/lexima.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-rooter'
+Plug 'alvan/vim-closetag'
+Plug 'LucHermitte/local_vimrc'
+Plug 'LucHermitte/lh-vim-lib'
 " Various FileType support
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'puremourning/vimspector'
+Plug 'liuchengxu/vista.vim'
 Plug 'kevinoid/vim-jsonc'
 Plug 'Freedzone/kerbovim'
 Plug 'maxbane/vim-asm_ca65'
+Plug 'OmniSharp/omnisharp-vim'
 " Plug 'cespare/vim-toml'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-" Plug 'leafgarland/typescript-vim'
 Plug 'tpope/vim-markdown'
 Plug 'clktmr/vim-gdscript3'
 " Plug 'DonnieWest/kotlin-vim'
 " Plug 'tfnico/vim-gradle'
 Plug 'rubixninja314/vim-mcfunction'
 Plug 'sheerun/vim-polyglot'
+Plug 'neoclide/npm.nvim', {'do': 'npm install'}
 " Visual changes
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
@@ -43,6 +50,9 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'frazrepo/vim-rainbow'
 
 call plug#end()
+
+" temporary
+set runtimepath^=/home/alex/dotfiles/coc-computercraft
 
 " Airline Settings
 let g:airline_powerline_fonts = 1
@@ -54,10 +64,13 @@ let g:airline#extensions#tabline#enabled = 1
 " Unmap <C-q> to prevent interference with my commands
 map <C-q> <Nop>
 
+" Vimspector
+let g:vimspector_enable_mappings = 'HUMAN'
+
 " Remaps
 let mapleader = ' '
-" Fast save
-nmap <leader>w :w!<cr>
+" Fast sav
+map <leader>w :w!<cr>
 " Fast search
 map <leader><space> /
 map <leader><C-space> ?
@@ -68,20 +81,9 @@ nmap <C-q>l :bnext<cr>
 nmap <C-q>h :bprevious<cr>
 nmap <C-q-l> :bnext<cr>
 nmap <C-q-h> :bprevious<cr>
-" Remap folds for qwertz layout
-nmap yc zc
-nmap yo zo
-nmap ya za
-nmap yC zC
-nmap yO zO
-nmap yA zA
-nmap yr zr
-nmap yR zR
-nmap ym zm
-nmap yM zM
 
 " Vim rooter
-let g:rooter_patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/', 'gradle/', 'Cargo.toml']
+let g:rooter_patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/', 'gradle/', 'Cargo.toml', 'tsconfig.json', '*.sln', 'Makefile']
 
 " Visual settings
 colorscheme nord
@@ -89,7 +91,6 @@ set encoding=UTF-8
 set number
 set breakindent
 set termguicolors
-highlight NonText ctermfg=Black
 
 " Search
 set ignorecase
@@ -137,6 +138,24 @@ let g:WebDevIconsUnicodeDecorateFileNodesExactSymbols['zshrc'] = ''
 if filereadable('gradlew')
 	compiler gradlew
 endif
+
+" ALE Settings
+let g:ale_fixers = {
+\	'javascript': ['eslint'],
+\	'typescript': ['eslint'],
+\ 'python': ['yapf'],
+\ 'cs': ['omnisharp']
+\}
+
+let g:ale_linters = {
+\ 'python': ['pylint', 'pyright', 'pyls'],
+\ 'cs': ['omnisharp', 'csc'],
+\ 'javascript': ['eslint', 'tsserver'],
+\	'typescript': ['eslint', 'tsserver']
+\}
+
+let g:ale_cs_csc_assembly_path = ['.']
+let g:ale_css_stylelint_options = '--config ~/.config/stylelintrc.js'
 
 " Coc.nvim settings
 " -----------------------------------
@@ -189,10 +208,9 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gd :ALEGoToDefinition<CR>
+nmap <silent> gy :ALEGoToTypeDefinition<CR>
+nmap <silent> gr :ALEFindReferences<CR>
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -209,11 +227,7 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f	<Plug>(coc-format-selected)
-nmap <leader>f	<Plug>(coc-format-selected)
+nmap <leader>rn :ALERename<CR>
 
 augroup mygroup
 	autocmd!
@@ -283,6 +297,8 @@ nnoremap <silent> <space>p	:<C-u>CocListResume<CR>
 
 nmap <silent> <C-d> <Plug>(coc-cursors-word)*
 xmap <silent> <C-d> y/\V<C-r>=escape(@",'/\')<CR><CR>gN<Plug>(coc-cursors-range)gn
-nmap <leader>f :CocCommand prettier.formatFile<cr>
+nmap <leader>f :ALEFix<CR>
+
+inoremap <ESC> <ESC> :call coc#float#close_all() <CR>
 
 command! -nargs=0 Prettier :CocCommand prettier.formatFile
