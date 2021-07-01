@@ -29,7 +29,7 @@ Plug 'windwp/nvim-ts-autotag'
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'karb94/neoscroll.nvim'
+Plug 'yuttie/comfortable-motion.vim'
 
 " Completion/LSP
 Plug 'dense-analysis/ale'
@@ -133,9 +133,6 @@ nmap <leader>zz :source ~/.config/nvim/markdown.vim<cr>
 set mouse=a
 " Exit terminal
 tnoremap <esc> <C-\><C-N>
-
-" Smooth scrolling
-lua require('neoscroll').setup()
 
 " Vim rooter
 let g:rooter_patterns = ['.git', '.git/', '_darcs/', '.hg/', '.bzr/', '.svn/', 'gradle/', 'Cargo.toml', 'tsconfig.json', '*.sln', '*.csproj', 'Makefile']
