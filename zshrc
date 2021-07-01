@@ -69,7 +69,6 @@ COMPLETION_WAITING_DOTS="true"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-		vi-mode
     git
     archlinux
     encode64
@@ -88,19 +87,15 @@ eval $(dircolors ~/.dir_colors)
 
 autoload bashcompinit
 bashcompinit
-eval "$(register-python-argcomplete pmbootstrap)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
+export HISTSIZE=5000
 
 # Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='nvim'
-fi
+export EDITOR='nvim'
 
 export PATH=$PATH:/home/alex/.local/bin:/home/alex/.gem/ruby/2.7.0/bin:/home/alex/.cargo/bin
 export GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"
@@ -115,12 +110,13 @@ export GRUB_CMDLINE_LINUX="bluetooth.disable_ertm=1"
 #
 alias vi='nvim'
 alias vim='nvim'
+alias vimdiff='nvim -d'
 alias nvimrc='nvim ~/.config/nvim/init.vim'
 alias pyvenv='source .env/bin/activate'
 alias pandemo='demopan -w "/home/alex/Mount/Games/Steam/steamapps/common/Team Fortress 2/tf/" --demos "/home/alex/Mount/Games/Steam/steamapps/common/Team Fortress 2/tf/demos"'
 alias gradlew='./gradlew'
 alias ipa='curl -s https://httpbin.org/ip | jq -r .origin'
-alias mntsrv='sudo sshfs -o allow_other,IdentityFile=/home/alex/.ssh/id_ed25519 -p 8079 alfred@10.40.120.16:/home/alfred /mnt/Alfred'
+alias mntsrv='sudo sshfs -o allow_other,IdentityFile=/home/alex/.ssh/id_ed25519 ubuntu@10.0.1.33:/mnt/knihovno /mnt/Alfons'
 alias sudedit='sudoedit'
 alias sudeodit='sudoedit'
 # Example aliases

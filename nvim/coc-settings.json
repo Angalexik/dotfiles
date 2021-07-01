@@ -34,5 +34,8 @@
 	// "python.linting.flake8Enabled": true,
 	// "python.linting.flake8Args": ["--ignore=E121,E123,E126,E226,E24,E265,E704,E501,W503,W504"],
 	"prettier.useTabs": true,
-	"prettier.singleQuote": true
+	"prettier.singleQuote": true,
+	"emmet.includeLanguages": {
+		"svelte": "html"
+	}
 }
