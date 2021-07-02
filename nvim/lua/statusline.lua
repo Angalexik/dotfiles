@@ -51,36 +51,6 @@ local padding = {
 	}
 }
 
-section.left[1] = leftsep
-
-section.left[2] = {
-	ViMode = {
-		provider = function ()
-			local modecols = {
-				N = colours.nord8,
-				T = colours.nord8,
-				['!'] = colours.nord8,
-				V = colours.nord7,
-				I = colours.nord14,
-				R = colours.nord14,
-				C = colours.nord12,
-			}
-			local mode = string.upper(
-				string.gsub(
-					string.sub(fn.mode(), 1, 1), "", "V"
-				):gsub("", "S")
-			)
-			cmd("hi GalaxyViMode guifg=" .. modecols[mode])
-			return mode
-		end,
-		separator = '',
-		separator_highlight = {colours.bg1},
-		highlight = {colours.fg, colours.bg1, "bold"},
-	}
-}
-
-section.left[3] = padding
-section.left[4] = leftsep
 
 local function shortenPath(path)
 
@@ -101,7 +71,44 @@ local function shortenPath(path)
 	return string.gsub(path, '^%<', '</')
 end
 
-section.left[5] = {
+local function showgit()
+	return condition.check_git_workspace and fn.winwidth(fn.winnr()) > 70
+end
+
+local function strip(text)
+	if text then
+		return string.gsub(text, "%s+", "")
+	end
+end
+
+local function getalediag()
+	local getcount = fn["ale#statusline#Count"]
+	local bufnr = fn.bufnr('%')
+	local errorcount = getcount(bufnr).error
+	local warningcount = getcount(bufnr).total - errorcount
+	return {
+		errors = errorcount,
+		warnings = warningcount
+	}
+end
+
+local function addLeftSection(component)
+	table.insert(section.left, component)
+end
+
+local function addRightSection(component)
+	table.insert(section.right, component)
+end
+
+local function addShortLeftSection(component)
+	table.insert(section.short_line_left, component)
+end
+
+local function addShortRightSection(component)
+	table.insert(section.short_line_right, component)
+end
+
+local FileName = {
 	FileName = {
 		provider = function ()
 			-- return string.gsub(fileinfo.get_current_file_name('', ''), '^%s*(.-)%s*$', '%1')
@@ -121,93 +128,7 @@ section.left[5] = {
 	}
 }
 
-local function showgit()
-	return condition.check_git_workspace and fn.winwidth(fn.winnr()) > 70
-end
-
-local function strip(text)
-	if text then
-		return string.gsub(text, "%s+", "")
-	end
-end
-
-section.left[6] = {
-	GitSep = {
-		provider = function ()
-			if showgit() and (vcs.diff_remove() or vcs.diff_add() or vcs.diff_modified()) then
-				return ' '
-			end
-		end,
-		highlight = {colours.bg1},
-	},
-}
-
-section.left[8] = {
-	GitAdditions = {
-		provider = function ()
-			local space = ''
-			if vcs.diff_modified() then
-				space = ' '
-			end
-			if vcs.diff_add() then
-				return strip(vcs.diff_add()) .. space
-			end
-		end,
-		icon = "+",
-		highlight = {colours.nord14, colours.bg1},
-		condition = showgit
-	}
-}
-
-section.left[9] = {
-	GitModifications = {
-		provider = function ()
-			local space = ''
-			if vcs.diff_remove() then
-				space = ' '
-			end
-			if vcs.diff_modified() then
-				return strip(vcs.diff_modified()) .. space
-			end
-		end,
-		icon = "~",
-		highlight = {colours.nord13, colours.bg1},
-		condition = showgit
-	}
-}
-
-section.left[10] = {
-	GitDeletions = {
-		provider = function ()
-			return strip(vcs.diff_remove())
-		end,
-		icon = "-",
-		highlight = {colours.nord11, colours.bg1},
-		condition = showgit
-	}
-}
-
-section.left[11] = {
-	GitSepRight = {
-		provider = function ()
-			if showgit() and (vcs.diff_remove() or vcs.diff_add() or vcs.diff_modified()) then
-				return ''
-			end
-		end,
-		highlight = {colours.bg1},
-	}
-}
-
-section.left[12] = {
-	ResetColour = {
-		provider = function ()
-			return ''
-		end,
-		highlight = {colours.bg0},
-	}
-}
-
-section.right[1] = {
+local FileType = {
 	FileType = {
 		provider = function ()
 			return bo.filetype
@@ -222,7 +143,119 @@ section.right[1] = {
 	}
 }
 
-section.right[2] = {
+addLeftSection(leftsep)
+
+addLeftSection({
+	ViMode = {
+		provider = function ()
+			local modecols = {
+				N = colours.nord8,
+				T = colours.nord8,
+				['!'] = colours.nord8,
+				V = colours.nord7,
+				I = colours.nord14,
+				R = colours.nord14,
+				C = colours.nord12,
+				S = colours.nord14,
+			}
+			local mode = string.upper(
+			string.gsub(
+			string.sub(fn.mode(), 1, 1), "", "V"
+			):gsub("", "S")
+			)
+			cmd("hi GalaxyViMode guifg=" .. modecols[mode])
+			return mode
+		end,
+		separator = '',
+		separator_highlight = {colours.bg1},
+		highlight = {colours.fg, colours.bg1, "bold"},
+	}
+})
+
+addLeftSection(padding)
+addLeftSection(leftsep)
+
+addLeftSection(FileName)
+
+addLeftSection({
+	GitSep = {
+		provider = function ()
+			if showgit() and (vcs.diff_remove() or vcs.diff_add() or vcs.diff_modified()) then
+				return ' '
+			end
+		end,
+		highlight = {colours.bg1},
+	},
+})
+
+addLeftSection({
+	GitAdditions = {
+		provider = function ()
+			if vcs.diff_add() then
+				if vcs.diff_modified() then
+					return vcs.diff_add()
+				else
+					return strip(vcs.diff_add())
+				end
+			end
+		end,
+		icon = "+",
+		highlight = {colours.nord14, colours.bg1},
+		condition = showgit
+	}
+})
+
+addLeftSection({
+	GitModifications = {
+		provider = function ()
+			if vcs.diff_modified() then
+				if vcs.diff_remove() then
+					return vcs.diff_modified()
+				else
+					return strip(vcs.diff_modified())
+				end
+			end
+		end,
+		icon = "~",
+		highlight = {colours.nord13, colours.bg1},
+		condition = showgit
+	}
+})
+
+addLeftSection({
+	GitDeletions = {
+		provider = function ()
+			return strip(vcs.diff_remove())
+		end,
+		icon = "-",
+		highlight = {colours.nord11, colours.bg1},
+		condition = showgit
+	}
+})
+
+addLeftSection({
+	GitSepRight = {
+		provider = function ()
+			if showgit() and (vcs.diff_remove() or vcs.diff_add() or vcs.diff_modified()) then
+				return ''
+			end
+		end,
+		highlight = {colours.bg1},
+	}
+})
+
+addLeftSection({
+	ResetColour = {
+		provider = function ()
+			return ''
+		end,
+		highlight = {colours.bg0},
+	}
+})
+
+addRightSection(FileType)
+
+addRightSection({
 	CondRightSeparator = {
 		provider = function ()
 			return ''
@@ -233,21 +266,10 @@ section.right[2] = {
 			return not (not ft or ft == '')
 		end,
 	},
-}
-section.right[3] = padding
+})
+addRightSection(padding)
 
-local function getalediag()
-	local getcount = fn["ale#statusline#Count"]
-	local bufnr = fn.bufnr('%')
-	local errorcount = getcount(bufnr).error
-	local warningcount = getcount(bufnr).total - errorcount
-	return {
-		errors = errorcount,
-		warnings = warningcount
-	}
-end
-
-section.right[4] = {
+addRightSection({
 	LineNCharN = {
 		provider = function ()
 			return fn.line('.') .. ':' .. fn.col('.')
@@ -256,12 +278,12 @@ section.right[4] = {
 		separator = '',
 		separator_highlight = {colours.bg1},
 	}
-}
+})
 
-section.right[5] = rightsep
-section.right[6] = padding
+addRightSection(rightsep)
+addRightSection(padding)
 
-section.right[7] = {
+addRightSection({
 	PercentTotLines = {
 		provider = function ()
 			local curline = fn.line('.')
@@ -273,13 +295,13 @@ section.right[7] = {
 		separator = '',
 		separator_highlight = {colours.bg1},
 	}
-}
+})
 
-section.right[8] = rightsep
-section.right[9] = padding
+addRightSection(rightsep)
+addRightSection(padding)
 
 
-section.right[10] = {
+addRightSection({
 	ALEWarning = {
 		provider = function ()
 			return "W:" .. getalediag().warnings
@@ -288,37 +310,43 @@ section.right[10] = {
 		separator = '',
 		separator_highlight = {colours.bg1},
 	}
-}
+})
 
-section.right[11] = {
+addRightSection({
 	nothing = {
 		provider = function ()
 			return ' '
 		end,
 		highlight = {colours.fg, colours.bg1},
 	}
-}
+})
 
-section.right[12] = {
+addRightSection({
 	ALEError = {
 		provider = function ()
 			return "E:" .. getalediag().errors
 		end,
 		highlight = {colours.nord11, colours.bg1},
 	}
-}
+})
 
-section.right[13] = rightsep
+addRightSection(rightsep)
 
-section.short_line_left[1] = leftsep
+addShortLeftSection(leftsep)
 
-section.short_line_left[2] = {
-	Name = {
+addShortLeftSection(FileName)
+
+addShortRightSection(FileType)
+
+addShortRightSection({
+	CondRightSeparator = {
 		provider = function ()
-			return bo.filetype:gsub("^%l", string.upper)
+			return ''
 		end,
-		highlight = {colours.fg, colours.bg1},
-		separator = '',
-		separator_highlight = {colours.bg1},
-	}
-}
+		highlight = {colours.bg1},
+		condition = function ()
+			local ft = bo.filetype
+			return not (not ft or ft == '')
+		end,
+	},
+})
