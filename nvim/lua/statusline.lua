@@ -125,6 +125,12 @@ local function showgit()
 	return condition.check_git_workspace and fn.winwidth(fn.winnr()) > 70
 end
 
+local function strip(text)
+	if text then
+		return string.gsub(text, "%s+", "")
+	end
+end
+
 section.left[6] = {
 	GitSep = {
 		provider = function ()
@@ -138,7 +144,15 @@ section.left[6] = {
 
 section.left[8] = {
 	GitAdditions = {
-		provider = "DiffAdd",
+		provider = function ()
+			local space = ''
+			if vcs.diff_modified() then
+				space = ' '
+			end
+			if vcs.diff_add() then
+				return strip(vcs.diff_add()) .. space
+			end
+		end,
 		icon = "+",
 		highlight = {colours.nord14, colours.bg1},
 		condition = showgit
@@ -147,7 +161,15 @@ section.left[8] = {
 
 section.left[9] = {
 	GitModifications = {
-		provider = "DiffModified",
+		provider = function ()
+			local space = ''
+			if vcs.diff_remove() then
+				space = ' '
+			end
+			if vcs.diff_modified() then
+				return strip(vcs.diff_modified()) .. space
+			end
+		end,
 		icon = "~",
 		highlight = {colours.nord13, colours.bg1},
 		condition = showgit
@@ -157,10 +179,7 @@ section.left[9] = {
 section.left[10] = {
 	GitDeletions = {
 		provider = function ()
-			if vcs.diff_remove() then
-				local removed = string.gsub(vcs.diff_remove(), "%s+", "")
-				return removed
-			end
+			return strip(vcs.diff_remove())
 		end,
 		icon = "-",
 		highlight = {colours.nord11, colours.bg1},
