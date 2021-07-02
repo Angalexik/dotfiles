@@ -147,7 +147,7 @@ set breakindent
 set termguicolors
 set noshowmode
 set signcolumn=yes
-set scrolloff=4
+set scrolloff=1
 " Highlights
 highlight link ALEInfoSign CocInfoSign
 highlight ALEInfo guifg=#88c0d0 gui=underline
