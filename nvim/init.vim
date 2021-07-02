@@ -148,8 +148,14 @@ set termguicolors
 set noshowmode
 set signcolumn=yes
 set scrolloff=4
+" Highlights
 highlight link ALEInfoSign CocInfoSign
 highlight ALEInfo guifg=#88c0d0 gui=underline
+highlight StatusLine guifg=#2e3440 guibg=#2e3440 ctermbg=black ctermbg=black
+highlight link StatusLineNC StatusLine
+highlight link StatusLineTerm StatusLine
+highlight link StatusLineTermNC StatusLine
+
 " Gitgutter symbols
 let g:gitgutter_sign_added = '┃'
 let g:gitgutter_sign_modified = '┃'
