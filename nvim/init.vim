@@ -9,7 +9,7 @@
 call plug#begin('~/.nvim_plugins')
 
 " Colour scheme
-Plug 'arcticicestudio/nord-vim'
+Plug 'Angalexik/nord-vim'
 Plug 'joshdick/onedark.vim'
 Plug 'reedes/vim-colors-pencil'
 
