@@ -1,0 +1,11 @@
+@import url("vars.css");
+
+* {
+    scrollbar-width: none;
+}
+
+@-moz-document url(about:blank), url(about:newtab), url(about:home), url(about:about), url(about:sessionrestore) {
+  html:not(#ublock0-epicker), html:not(#ublock0-epicker) body, #newtab-customize-overlay {
+    background: var(--bg0) !important;
+  }
+}
