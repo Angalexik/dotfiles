@@ -88,6 +88,34 @@ eval $(dircolors ~/.dir_colors)
 autoload bashcompinit
 bashcompinit
 
+# zsh syntax highlighting
+NORD8='cyan'
+NORD9='blue'
+NORD13='yellow'
+NORD14='green'
+
+typeset -A ZSH_HIGHLIGHT_STYLES
+ZSH_HIGHLIGHT_STYLES[alias]="fg=$NORD8"
+ZSH_HIGHLIGHT_STYLES[suffix-alias]="fg=$NORD8"
+ZSH_HIGHLIGHT_STYLES[global-alias]="fg=$NORD8"
+ZSH_HIGHLIGHT_STYLES[command]="fg=$NORD8"
+ZSH_HIGHLIGHT_STYLES[precommand]="fg=$NORD8,underline"
+ZSH_HIGHLIGHT_STYLES[builtin]="fg=$NORD8"
+ZSH_HIGHLIGHT_STYLES[function]="fg=$NORD8"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]="fg=$NORD14"
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]="fg=$NORD14"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]="fg=$NORD14"
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]="fg=$NORD14"
+ZSH_HIGHLIGHT_STYLES[back-double-quoted-argument]="fg=$NORD13"
+ZSH_HIGHLIGHT_STYLES[back-dolllar-quoted-argument]="fg=$NORD13"
+ZSH_HIGHLIGHT_STYLES[back-quoted-argument-delimiter]="none"
+ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter-unquoted]="none"
+ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter-quoted]="none"
+ZSH_HIGHLIGHT_STYLES[process-substitution-delimiter]="none"
+ZSH_HIGHLIGHT_STYLES[globbing]="none"
+ZSH_HIGHLIGHT_STYLES[redirection]="fg=$NORD9"
+ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$NORD9"
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
