@@ -147,6 +147,7 @@ alias ipa='curl -s https://httpbin.org/ip | jq -r .origin'
 alias mntsrv='sudo sshfs -o allow_other,IdentityFile=/home/alex/.ssh/id_ed25519 ubuntu@10.0.1.33:/mnt/knihovno /mnt/Alfons'
 alias sudedit='sudoedit'
 alias sudeodit='sudoedit'
+alias lazyadm='lazygit --use-config-file "$HOME/.config/yadm/lazygit.yml,$HOME/.config/lazygit/config.yml" --work-tree ~ --git-dir ~/.local/share/yadm/repo.git'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
