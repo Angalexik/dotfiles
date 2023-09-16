@@ -7,10 +7,6 @@ curl -fsSL https://github.com/arcticicestudio/nord-dircolors/raw/develop/src/dir
 # Init submodules
 yadm submodule update --recursive --init
 
-# Install vim plug
-curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-	https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
 # Install oh my zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc --unattended
 
