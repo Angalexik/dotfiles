@@ -157,3 +157,7 @@ alias lazyadm='lazygit --use-config-file "$HOME/.config/yadm/lazygit.yml,$HOME/.
 eval "$(starship init zsh)"
 # Enable thefuck
 eval "$(thefuck --alias)"
+
+# Enable zoxide
+eval "$(zoxide init zsh)"
+
