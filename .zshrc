@@ -120,7 +120,8 @@ ZSH_HIGHLIGHT_STYLES[reserved-word]="fg=$NORD9"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
-export HISTSIZE=5000
+export HISTSIZE=500000
+export SAVEHIST=500000
 
 # Preferred editor for local and remote sessions
 export EDITOR='nvim'
