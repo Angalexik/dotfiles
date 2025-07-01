@@ -1,0 +1,117 @@
+(input-method cs diacr)
+
+(description"
+x for háček, w for čárka
+")
+(title "CZ")
+
+(map
+  (trans
+ 
+("ex" "ě")
+("rx" "ř")
+("tx" "ť")
+("ux" "ů")
+("sx" "š")
+("dx" "ď")
+("cx" "č")
+("zx" "ž")
+("nx" "ň")
+
+("Ex" "Ě")
+("Rx" "Ř")
+("Tx" "Ť")
+("Ux" "Ů")
+("Sx" "Š")
+("Dx" "Ď")
+("Cx" "Č")
+("Zx" "Ž")
+("Nx" "Ň")
+
+("EX" "Ě")
+("RX" "Ř")
+("TX" "Ť")
+("UX" "Ů")
+("SX" "Š")
+("DX" "Ď")
+("CX" "Č")
+("ZX" "Ž")
+("NX" "Ň")
+
+("ew" "é")
+("uw" "ú")
+("iw" "í")
+("ow" "ó")
+("aw" "á")
+("yw" "ý")
+
+("Ew" "É")
+("Uw" "Ú")
+("Iw" "Í")
+("Ow" "Ó")
+("Aw" "Á")
+("Yw" "Ý")
+
+("EW" "É")
+("UW" "Ú")
+("IW" "Í")
+("OW" "Ó")
+("AW" "Á")
+("YW" "Ý")
+
+("exx" "ex")
+("rxx" "rx")
+("txx" "tx")
+("uxx" "ux")
+("sxx" "sx")
+("dxx" "dx")
+("cxx" "cx")
+("zxx" "zx")
+("nxx" "nx")
+
+("Exx" "Ex")
+("Rxx" "Rx")
+("Txx" "Tx")
+("Uxx" "Ux")
+("Sxx" "Sx")
+("Dxx" "Dx")
+("Cxx" "Cx")
+("Zxx" "Zx")
+("Nxx" "Nx")
+
+
+("EXX" "EX")
+("RXX" "RX")
+("TXX" "TX")
+("UXX" "UX")
+("SXX" "SX")
+("DXX" "DX")
+("CXX" "CX")
+("ZXX" "ZX")
+("NXX" "NX")
+
+("eww" "ew")
+("uww" "uw")
+("iww" "iw")
+("oww" "ow")
+("aww" "aw")
+("yww" "yw")
+
+("Eww" "Ew")
+("Uww" "Uw")
+("Iww" "Iw")
+("Oww" "Ow")
+("Aww" "Aw")
+("Yww" "Yw")
+
+("EWW" "EW")
+("UWW" "UW")
+("IWW" "IW")
+("OWW" "OW")
+("AWW" "AW")
+("YWW" "YW")
+   ))
+
+(state
+  (init
+    (trans)))
