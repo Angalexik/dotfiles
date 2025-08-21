@@ -162,5 +162,14 @@ eval "$(starship init zsh)"
 # Enable zoxide
 eval "$(zoxide init zsh)"
 
+# Enable owo
+function owo() {
+    local cmd
+    cmd="$(owo-cli "$@")" || return
+    vared -p "owo> " cmd
+    print -s -- "$cmd"
+    eval "$cmd"
+}
+
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
