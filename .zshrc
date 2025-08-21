@@ -149,15 +149,18 @@ alias mntsrv='sudo sshfs -o allow_other,IdentityFile=/home/alex/.ssh/id_ed25519 
 alias sudedit='sudoedit'
 alias sudeodit='sudoedit'
 alias lazyadm='lazygit --use-config-file "$HOME/.config/yadm/lazygit.yml,$HOME/.config/lazygit/config.yml" --work-tree ~ --git-dir ~/.local/share/yadm/repo.git'
+alias fnljit='luajit $(which fennel)'
+alias protontricks='flatpak run com.github.Matoking.protontricks'
+alias protontricks-launch='flatpak run --command=protontricks-launch com.github.Matoking.protontricks'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # Enable starship prompt
 eval "$(starship init zsh)"
-# Enable thefuck
-eval "$(thefuck --alias)"
 
 # Enable zoxide
 eval "$(zoxide init zsh)"
 
+[ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
+export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
