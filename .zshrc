@@ -171,5 +171,13 @@ function owo() {
     eval "$cmd"
 }
 
+# Don't save history when doing top secret stuff
+zshaddhistory() {
+    case $PWD in
+        (/mnt/Decrypted*) return 1;;
+        (*) return 0;;
+    esac
+}
+
 [ -f /opt/miniconda3/etc/profile.d/conda.sh ] && source /opt/miniconda3/etc/profile.d/conda.sh
 export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
