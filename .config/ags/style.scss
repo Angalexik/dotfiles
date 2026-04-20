@@ -1,0 +1,57 @@
+// https://gitlab.gnome.org/GNOME/gtk/-/blob/gtk-3-24/gtk/theme/Adwaita/_colors-public.scss
+$fg-color: #{"@window_fg_color"};
+$bg-color: #{"@window_bg_color"};
+$border-color: #{"@border_color"};
+
+window.Bar {
+  background: transparent;
+  color: $fg-color;
+  font-weight: bold;
+
+  >centerbox {
+    background: $bg-color;
+    border-radius: 10px;
+    margin: 8px;
+  }
+
+  button {
+    border-radius: 8px;
+    margin: 2px;
+  }
+}
+
+window.Dock {
+  border-radius: 20px;
+  margin: 10px;
+  padding: 10px;
+
+  >box>separator {
+    margin: 10px;
+  }
+}
+
+window.Dock {
+  background: $bg-color;
+  color: $fg-color;
+  border: solid 2px color-mix(in srgb, currentColor 15%, transparent);
+}
+
+// window.Dock {
+//   background-color: rgba(200, 200, 200, 0.2);
+// }
+
+button.AppButton {
+  border-radius: 10px;
+
+  .app-icon {
+    margin: 3px;
+  }
+
+
+  // background: transparent;
+}
+
+.indicator {
+  background: $fg-color;
+  border-radius: 100%;
+}

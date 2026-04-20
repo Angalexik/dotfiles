@@ -1,0 +1,11 @@
+{
+  "transparent": false,
+  "pinnedApps": [
+    "firefox",
+    "chromium",
+    "org.gnome.Nautilus",
+    "org.gnome.Software",
+    "org.gnome.SystemMonitor",
+    "org.gnome.Console"
+  ]
+}
