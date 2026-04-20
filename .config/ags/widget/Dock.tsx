@@ -2,10 +2,9 @@ import app from "ags/gtk4/app";
 import config from "../options";
 import AstalNiri from "gi://AstalNiri";
 import AstalApps from "gi://AstalApps";
+import Gio from "gi://Gio";
 import { Astal, Gtk, Gdk } from "ags/gtk4";
-import { createBinding, createComputed, createState, For } from "ags";
-import { execAsync } from "ags/process";
-import { createPoll } from "ags/time";
+import { createBinding, createComputed, For } from "ags";
 
 const niri = AstalNiri.get_default();
 const application = new AstalApps.Apps();
@@ -39,6 +38,26 @@ type DockApp = { appId: string; windows: AstalNiri.Window[] };
 function AppButton({ appId, windows }: DockApp) {
   const appInfo = appId ? findAppInfo(appId) : null;
   const iconName = appInfo?.iconName ?? "question-round-outline";
+
+  // Open Windows (if open)
+  // ----
+  // Launch
+  // ---
+  // Launch things from desktop file (if applicable)
+  // ---
+  // Close (if open)
+  // ---
+  // Potentially pin/unpin
+  const menuModel = new Gio.Menu();
+  menuModel.append("Launch", "app.launch");
+  // TODO: PopoverBin instead
+  const rightClickMenu = (
+    <Gtk.PopoverMenu
+      $type="overlay"
+      $constructor={() => Gtk.PopoverMenu.new_from_model(menuModel)}
+    />
+  );
+
   return (
     <overlay>
       <button
@@ -47,7 +66,7 @@ function AppButton({ appId, windows }: DockApp) {
           if (windows[0] !== undefined) {
             windows[0].focus(windows[0].id);
           } else {
-            appInfo.launch();
+            appInfo?.launch();
           }
           const overview = niri.overview;
           if (overview.is_open) {
@@ -55,15 +74,23 @@ function AppButton({ appId, windows }: DockApp) {
           }
         }}
       >
+        <Gtk.GestureClick
+          button={Gdk.BUTTON_SECONDARY}
+          onPressed={(_source, _n_press, _x, _y) => {
+            console.log("Right click!");
+            rightClickMenu.popup();
+          }}
+        />
         <image class="app-icon" iconName={iconName} pixelSize={64} />
       </button>
+      {rightClickMenu}
       <box
         $type="overlay"
         valign={Gtk.Align.END}
         halign={Gtk.Align.CENTER}
         spacing={5}
       >
-        {windows.map((w) => {
+        {windows.map((_) => {
           return <box class="indicator" width-request={5} height-request={5} />;
         })}
       </box>
@@ -93,7 +120,7 @@ export default function Dock(gdkmonitor: Gdk.Monitor) {
         }
 
         return acc;
-      }, []);
+      }, [] as DockApp[]);
   });
   const showSeparator = createComputed(() => {
     return unpinnedApps().length > 0;
@@ -120,7 +147,7 @@ export default function Dock(gdkmonitor: Gdk.Monitor) {
             }}
           </For>
         </box>
-        <Gtk.Separator visible={showSeparator}/>
+        <Gtk.Separator visible={showSeparator} />
         <box>
           <For each={unpinnedApps}>
             {({ appId, windows }) => {
