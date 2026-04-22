@@ -9,6 +9,13 @@ import { createBinding, createComputed, For } from "ags";
 const niri = AstalNiri.get_default();
 const application = new AstalApps.Apps();
 
+function closeOverview() {
+  const overview = niri.overview;
+  if (overview.is_open) {
+    overview.toggle(() => {});
+  }
+}
+
 function findAppInfo(appId: string): AstalApps.Application | null {
   const searchTerm = appId.toLowerCase();
   const appList = application.get_list();
@@ -35,9 +42,102 @@ function findAppInfo(appId: string): AstalApps.Application | null {
 
 type DockApp = { appId: string; windows: AstalNiri.Window[] };
 
-function AppButton({ appId, windows }: DockApp) {
-  const appInfo = appId ? findAppInfo(appId) : null;
-  const iconName = appInfo?.iconName ?? "question-round-outline";
+function createMenuModel(
+  actionPrefix: string,
+  appInfo: AstalApps.Application | null,
+  windows: AstalNiri.Window[]
+): [Gio.MenuModel, Gio.ActionGroup] {
+  type Section = {
+    name: string | null;
+    actions: Action[];
+  };
+  type Action = { title: string; id: string; activate: () => void };
+
+  const openWindows: Section = {
+    name: "Open windows",
+    actions: windows.map((w) => {
+      return {
+        title: w.title,
+        id: `open-window-${w.id}`,
+        activate: () => {
+          w.focus(w.id);
+          closeOverview();
+        },
+      };
+    }),
+  };
+
+  const launchSection: Section = {
+    name: null,
+    actions: appInfo
+      ? [
+          {
+            title: "Launch",
+            id: "launch",
+            activate: () => {
+              appInfo.launch();
+              closeOverview();
+            },
+          },
+        ]
+      : [],
+  };
+
+  const desktopFileSection: Section = {
+    name: null,
+    actions: appInfo
+      ? // @ts-ignore
+        appInfo.app.list_actions().map((id: string) => {
+          return {
+            // @ts-ignore
+            title: appInfo.app.get_action_name(id),
+            id: `desktopfile-${id}`,
+            activate: () => {
+              // @ts-ignore
+              appInfo.app.launch_action(id, null);
+              closeOverview();
+            },
+          };
+        })
+      : [],
+  };
+
+  const quitSection: Section = {
+    name: null,
+    actions:
+      windows.length > 0
+        ? [
+            {
+              title: "Quit",
+              id: "quit",
+              activate: () => {
+                windows.forEach((w) => {
+                  AstalNiri.msg.close_window(w.id);
+                });
+              },
+            },
+          ]
+        : [],
+  };
+
+  const sections = [
+    openWindows,
+    launchSection,
+    desktopFileSection,
+    // quitSection,
+  ];
+
+  const actionGroup = new Gio.SimpleActionGroup();
+  actionGroup.add_action_entries(
+    sections
+      .flatMap(({ actions }) => actions)
+      .map(({ id, activate }) => {
+        return {
+          name: id,
+          activate: activate,
+        };
+      })
+  );
 
   // Open Windows (if open)
   // ----
@@ -49,14 +149,34 @@ function AppButton({ appId, windows }: DockApp) {
   // ---
   // Potentially pin/unpin
   const menuModel = new Gio.Menu();
-  menuModel.append("Launch", "app.launch");
-  // TODO: PopoverBin instead
+  sections.forEach(({ name, actions }) => {
+    const section = new Gio.Menu();
+    actions.forEach(({ title, id }) => {
+      section.append(title, `${actionPrefix}.${id}`);
+    });
+
+    menuModel.append_section(name, section);
+  });
+
+  return [menuModel, actionGroup];
+}
+
+function AppButton({ appId, windows }: DockApp) {
+  const appInfo = appId ? findAppInfo(appId) : null;
+  const iconName = appInfo?.iconName ?? "question-round-outline";
+
+  const [menuModel, actionGroup] = createMenuModel("popup", appInfo, windows);
+
   const rightClickMenu = (
     <Gtk.PopoverMenu
       $type="overlay"
       $constructor={() => Gtk.PopoverMenu.new_from_model(menuModel)}
+      $={(self) => {
+        self.insert_action_group("popup", actionGroup);
+      }}
+      hasArrow={false}
     />
-  );
+  ) as Gtk.PopoverMenu;
 
   return (
     <overlay>
@@ -68,10 +188,7 @@ function AppButton({ appId, windows }: DockApp) {
           } else {
             appInfo?.launch();
           }
-          const overview = niri.overview;
-          if (overview.is_open) {
-            overview.toggle(() => {});
-          }
+          closeOverview();
         }}
       >
         <Gtk.GestureClick
