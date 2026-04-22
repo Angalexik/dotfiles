@@ -194,7 +194,6 @@ function AppButton({ appId, windows }: DockApp) {
         <Gtk.GestureClick
           button={Gdk.BUTTON_SECONDARY}
           onPressed={(_source, _n_press, _x, _y) => {
-            console.log("Right click!");
             rightClickMenu.popup();
           }}
         />
@@ -245,11 +244,16 @@ export default function Dock(gdkmonitor: Gdk.Monitor) {
 
   const showDock = createBinding(niri.overview, "is_open");
 
+  const cssClasses = ["Dock"];
+  if (config.transparent) {
+    cssClasses.push("transparent")
+  }
+
   return (
     <window
       visible={showDock}
       name="dock"
-      class="Dock"
+      cssClasses={cssClasses}
       namespace="my-dock"
       gdkmonitor={gdkmonitor}
       layer={Astal.Layer.TOP}
