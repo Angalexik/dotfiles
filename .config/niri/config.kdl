@@ -647,7 +647,7 @@ binds {
 
     // Security
     Mod+L hotkey-overlay-title="Lock Screen" {
-        spawn "waylock"
+        spawn "hyprlock"
     }
 
     // Audio Controls
