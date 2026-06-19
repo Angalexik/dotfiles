@@ -273,7 +273,8 @@ layout {
 // This line starts waybar, a commonly used bar for Wayland compositors.
 // spawn-at-startup "waybar"
 
-spawn-at-startup "xfce4-power-manager"
+spawn-at-startup "lxqt-powermanagement"
+spawn-sh-at-startup "swayidle before-sleep 'hyprlock --immediate-render --no-fade-in'"
 
 spawn-sh-at-startup "delta-shell run"
 spawn-sh-at-startup "ags run ~/.config/ags/app.ts"
