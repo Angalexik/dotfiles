@@ -1,0 +1,26 @@
+#!/usr/bin/env ysh
+
+niri msg --json event-stream | for line in (io.stdin) {
+	const event = fromJson(line)
+
+	var overviewState = null
+	try {
+		setvar overviewState = event['OverviewOpenedOrClosed']
+	}
+
+	if (_error.code === 0) {
+		if (overviewState['is_open']) {
+			try { vicinae open }
+			fork {
+				while vicinae state open {
+					sleep 0.1
+				}
+				niri msg action close-overview
+			}
+		} else {
+			try { vicinae close }
+		}
+	}
+}
+
+# vi: ft=ysh
