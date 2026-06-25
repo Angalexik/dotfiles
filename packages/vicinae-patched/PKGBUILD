@@ -1,0 +1,83 @@
+# Maintainer: Angalexik <angalexik@proton.me>
+# Contributor: cilgin <cilgincc@outlook.com>
+# Contributor: Arjix <me@arjix.dev>
+
+# shellcheck disable=SC2034
+# shellcheck disable=SC2154
+_pkgname=vicinae
+pkgname="$_pkgname-patched"
+pkgver=0.22.0
+pkgrel=1
+pkgdesc="A focused launcher for your desktop — native, fast, extensible"
+arch=('x86_64' 'aarch64')
+url="https://github.com/vicinaehq/vicinae"
+license=('GPL3')
+depends=(
+  'nodejs'
+  'qt6-base'
+  'qt6-svg'
+  'cmark-gfm'
+  'layer-shell-qt'
+  'libqalculate'
+  'minizip'
+  'qtkeychain-qt6'
+  'libxml2'
+  'qt6-declarative'
+  'syntax-highlighting'
+)
+makedepends=(
+  'git'
+  'cmake'
+  'ninja'
+  'npm'
+  'rapidfuzz-cpp'
+  'jq'
+  'glaze'
+  'curl'
+  'qt6-shadertools'
+)
+install=vicinae.install
+provides=("vicinae")
+conflicts=("vicinae")
+source=(
+  "${_pkgname}-v${pkgver}.tar.gz::${url}/archive/refs/tags/v$pkgver.tar.gz"
+  "vicinae.hook"
+  "0001-add-top-offset-option.patch"
+)
+
+sha256sums=('5a8ce475923904fd07cfb8cc2ac7e5492b5ca0d0d06dd33af17a69bba50a9319'
+            'c0b55d492285b252229a8b47c3229afbd5d649b65eb211bbeb4f7617f5288506'
+            '760570ba6db1ece14756b059b951ef2b234c5ce37949ac197f5400639411b13a')
+
+prepare() {
+  curl "https://api.github.com/repos/vicinaehq/vicinae/git/ref/tags/v${pkgver}" \
+    --output "${_pkgname}-v${pkgver}-meta.yml" \
+    --silent \
+    --follow
+
+  cd "$_pkgname-$pkgver" || exit
+  patch -Np1 -i ../0001-add-top-offset-option.patch
+}
+
+build() {
+  SHA=$(jq .object.sha "${_pkgname}-v${pkgver}-meta.yml" -r)
+
+  cd $_pkgname-$pkgver || exit
+  cmake -G Ninja \
+    -DVICINAE_GIT_TAG="v${pkgver}" \
+    -DVICINAE_GIT_COMMIT_HASH="${SHA:0:7}" \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DVICINAE_PROVENANCE=aur \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -B build
+
+  cmake --build build
+}
+
+package() {
+  cd "$_pkgname-$pkgver" || exit
+  DESTDIR="$pkgdir" cmake --install build
+
+  # Pacman hook
+  install -Dm644 "$srcdir/${_pkgname}.hook" "$pkgdir/usr/share/libalpm/hooks/${pkgname}.hook"
+}

@@ -1,0 +1,155 @@
+From efb8eb041add7d10605ae2d3b6bb1af8a203b3f5 Mon Sep 17 00:00:00 2001
+From: Angalexik <58977805+Angalexik@users.noreply.github.com>
+Date: Thu, 25 Jun 2026 10:54:03 +0200
+Subject: [PATCH] add top offset option
+
+---
+ extra/config.jsonc                              |  5 ++++-
+ src/server/src/config/config.hpp                |  2 ++
+ src/server/src/qml/launcher-window.cpp          | 17 +++++++++++++++++
+ src/server/src/qml/launcher-window.hpp          |  7 +++++++
+ .../src/qml/qml/LauncherWindowLayerShell.qml    |  4 ++--
+ 5 files changed, 32 insertions(+), 3 deletions(-)
+
+diff --git a/extra/config.jsonc b/extra/config.jsonc
+index f46b96b..81b905d 100644
+--- a/extra/config.jsonc
++++ b/extra/config.jsonc
+@@ -155,7 +155,10 @@
+ 			// either 'overlay' or 'top'.
+ 			// Other layers are not supported as they are unsuitable for a launcher.
+ 			// 'top' is recommended as using 'overlay' will make the vicinae window appear on top of IME popovers in some scenarios.
+-			"layer": "top" 
++			"layer": "top",
++
++			// null means centered, otherwise pixel offset from the top of the screen
++			"top_offset": null
+ 		}
+ 	},
+ 
+diff --git a/src/server/src/config/config.hpp b/src/server/src/config/config.hpp
+index 897214f..05cb22c 100644
+--- a/src/server/src/config/config.hpp
++++ b/src/server/src/config/config.hpp
+@@ -61,12 +61,14 @@ struct LayerShellConfig {
+   std::string keyboardInteractivity = "exclusive";
+   std::string layer = "top";
+   bool enabled = true;
++  std::optional<int> topOffset;
+ };
+ 
+ template <> struct Partial<LayerShellConfig> {
+   std::optional<std::string> layer;
+   std::optional<std::string> keyboardInteractivity;
+   std::optional<bool> enabled;
++  std::optional<int> topOffset;
+ };
+ 
+ struct BlurConfig {
+diff --git a/src/server/src/qml/launcher-window.cpp b/src/server/src/qml/launcher-window.cpp
+index 9895941..cb0b0fb 100644
+--- a/src/server/src/qml/launcher-window.cpp
++++ b/src/server/src/qml/launcher-window.cpp
+@@ -28,6 +28,7 @@
+ #include "internal/keyboard/keyboard.hpp"
+ #include "ui/views/base-view.hpp"
+ #include "ui/action-pannel/action-panel-state.hpp"
++#include <LayerShellQt/window.h>
+ #include <QCursor>
+ #include <QGuiApplication>
+ #include <QQmlContext>
+@@ -38,6 +39,7 @@
+ #include <qcoreevent.h>
+ #include <qlogging.h>
+ #include <memory>
++#include <qmargins.h>
+ 
+ #ifdef __GLIBC__
+ #include <malloc.h>
+@@ -632,6 +634,13 @@ void LauncherWindow::updateLayerShellProps() {
+   int ki = 2;                                                                   // OnDemand
+   if (lc.keyboardInteractivity == "exclusive" && !cfg.closeOnFocusLoss) ki = 1; // Exclusive
+ 
++  LayerShellQt::Window::Anchors anchors = LayerShellQt::Window::AnchorNone;
++  QMargins margins = {0, 0, 0, 0};
++  if (lc.topOffset.has_value()) {
++    anchors = LayerShellQt::Window::AnchorTop;
++    margins.setTop(lc.topOffset.value());
++  }
++
+   bool changed = false;
+   if (m_lsLayer != layer) {
+     m_lsLayer = layer;
+@@ -641,5 +650,13 @@ void LauncherWindow::updateLayerShellProps() {
+     m_lsKeyboardInteractivity = ki;
+     changed = true;
+   }
++  if (m_lsAnchors != anchors) {
++    m_lsAnchors = anchors;
++    changed = true;
++  }
++  if (m_lsMargins != margins) {
++    m_lsMargins = margins;
++    changed = true;
++  }
+   if (changed) emit lsChanged();
+ }
+diff --git a/src/server/src/qml/launcher-window.hpp b/src/server/src/qml/launcher-window.hpp
+index 11c7a5e..08cbe87 100644
+--- a/src/server/src/qml/launcher-window.hpp
++++ b/src/server/src/qml/launcher-window.hpp
+@@ -1,6 +1,7 @@
+ #pragma once
+ #include "common/context.hpp"
+ #include "image-url.hpp"
++#include <LayerShellQt/window.h>
+ #include <QObject>
+ #include <QQmlApplicationEngine>
+ #include <QTimer>
+@@ -50,6 +51,8 @@ class LauncherWindow : public QObject {
+   Q_PROPERTY(QObject *overlayHost READ overlayHost NOTIFY overlayChanged)
+   Q_PROPERTY(int lsLayer READ lsLayer NOTIFY lsChanged)
+   Q_PROPERTY(int lsKeyboardInteractivity READ lsKeyboardInteractivity NOTIFY lsChanged)
++  Q_PROPERTY(LayerShellQt::Window::Anchors lsAnchors READ lsAnchors NOTIFY lsChanged)
++  Q_PROPERTY(QMargins lsMargins READ lsMargins NOTIFY lsChanged)
+   Q_PROPERTY(bool canPositionWindow READ canPositionWindow CONSTANT)
+ 
+ public:
+@@ -85,6 +88,8 @@ public:
+   QObject *overlayHost() const { return m_overlayHost; }
+   int lsLayer() const { return m_lsLayer; }
+   int lsKeyboardInteractivity() const { return m_lsKeyboardInteractivity; }
++  LayerShellQt::Window::Anchors lsAnchors() const { return m_lsAnchors; }
++  QMargins lsMargins() const { return m_lsMargins; }
+   static bool canPositionWindow();
+ 
+   Q_INVOKABLE void expand();
+@@ -184,6 +189,8 @@ private:
+   bool m_closeOnFocusLoss = false;
+   int m_lsLayer = 2;                 // LayerShellQt::Window::LayerTop
+   int m_lsKeyboardInteractivity = 2; // LayerShellQt::Window::KeyboardInteractivityOnDemand
++  LayerShellQt::Window::Anchors m_lsAnchors = LayerShellQt::Window::AnchorNone;
++  QMargins m_lsMargins = {0, 0, 0, 0};
+   bool m_hasCompleter = false;
+   QVariantList m_completerArgs;
+   QString m_completerIcon;
+diff --git a/src/server/src/qml/qml/LauncherWindowLayerShell.qml b/src/server/src/qml/qml/LauncherWindowLayerShell.qml
+index 04da66e..f4a9a12 100644
+--- a/src/server/src/qml/qml/LauncherWindowLayerShell.qml
++++ b/src/server/src/qml/qml/LauncherWindowLayerShell.qml
+@@ -2,10 +2,10 @@ import org.kde.layershell as LayerShell
+ 
+ LauncherWindow {
+     shadowPadding: BackgroundEffect.supportsRegionalBlur ? Config.shadowSize : 0
+-
+-    LayerShell.Window.anchors: LayerShell.Window.AnchorNone
+     LayerShell.Window.scope: "vicinae"
+     LayerShell.Window.wantsToBeOnActiveScreen: true
+     LayerShell.Window.layer: launcher.lsLayer
+     LayerShell.Window.keyboardInteractivity: launcher.lsKeyboardInteractivity
++    LayerShell.Window.anchors: launcher.lsAnchors
++    LayerShell.Window.margins: launcher.lsMargins
+ }
+-- 
+2.54.0
+

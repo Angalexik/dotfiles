@@ -43,7 +43,8 @@
          "enabled": true
       },
       "layer_shell": {
-         "enabled": true
+         "enabled": true,
+         "top_offset": 65
       }
    },
    "providers": {
