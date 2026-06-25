@@ -279,7 +279,6 @@ spawn-sh-at-startup "swayidle before-sleep 'hyprlock --immediate-render --no-fad
 spawn-sh-at-startup "delta-shell run"
 spawn-sh-at-startup "ags run ~/.config/ags/app.ts"
 spawn-sh-at-startup "swaybg -i ~/wallpapers/souredapple_clouds.png"
-spawn-sh-at-startup "vicinae server"
 spawn-sh-at-startup "~/.local/bin/niri-overview-applauncher"
 
 spawn-at-startup "awww-daemon"
